@@ -1,0 +1,50 @@
+import pygame
+import random
+
+
+def main():
+    try:
+        pygame.init()
+
+        mole_image = pygame.image.load("mole.png")
+        screen = pygame.display.set_mode((640, 512))
+        clock = pygame.time.Clock()
+        running = True
+
+        x_cord = 0
+        y_cord = 0
+
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    x_click = (event.pos[0] // 32)* 32
+                    y_click = (event.pos[1] // 32)* 32
+
+                    if x_click == x_cord and y_click == y_cord:
+                        x_cord = (random.randrange(0, 640) // 32) * 32
+                        y_cord = (random.randrange(0, 512) // 32) * 32
+            screen.fill("light green")
+            screen.blit(mole_image, mole_image.get_rect(topleft=(x_cord, y_cord)))
+
+            pygame.draw.line(screen, color = "Red", start_pos = (640,0), end_pos = (640,512))
+
+            #vertical
+            for x in range (0, 640, 32):
+                pygame.draw.line(screen, color = "Red", start_pos = (x, 0), end_pos = (x, 512))
+
+            #horizontal
+            for y in range(0, 512, 32):
+                pygame.draw.line(screen, color = "Red", start_pos = (0, y), end_pos = (640, y))
+
+            pygame.display.flip()
+            clock.tick(60)
+
+
+    finally:
+        pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
